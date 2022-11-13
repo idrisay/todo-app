@@ -1,0 +1,19 @@
+footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: blanchedalmond;
+  padding: 0.5rem;
+}
+
+footer div{
+    display: flex;
+    width: 100vw;
+    justify-content: space-around;
+}
+
+footer div a {
+  font-size: 1.25rem;
+  text-decoration: none;
+  color: black;
+}

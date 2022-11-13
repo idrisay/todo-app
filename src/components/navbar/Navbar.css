@@ -1,0 +1,17 @@
+nav{
+    background-color: antiquewhite;
+    padding: 10px;
+    display: flex;
+    justify-content: space-around;
+}
+
+nav a{
+    text-decoration: none;
+    color: grey;
+    font-size: 1.5rem;
+    border-radius: 100%;
+}
+
+nav a:hover{
+    color: white;
+}
