@@ -3,11 +3,17 @@ import { useState } from "react";
 
 const Main = () => {
   let [todoName, setTodoName] = useState("");
+  const [toggleSearchAdd, setToggleSearchAdd] = useState("search");
   let [todoList, setTodoList] = useState([
     { id: 1, todoName: "Learn React", completed: false }, // -> item
     { id: 2, todoName: "Learn JS", completed: true }, // -> item
     { id: 3, todoName: "Learn HTML", completed: false }, // -> item
   ]);
+  const [currentTodoList, setCurrentTodoList] = useState([
+    { id: 1, todoName: "Learn React", completed: false }, // -> item
+    { id: 2, todoName: "Learn JS", completed: true }, // -> item
+    { id: 3, todoName: "Learn HTML", completed: false }, // -> item
+  ])
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -23,6 +29,7 @@ const Main = () => {
     };
     console.log(newTodo);
     setTodoList([...todoList, newTodo]);
+    setCurrentTodoList([...todoList, newTodo]);
     setTodoName("");
   };
 
@@ -38,24 +45,63 @@ const Main = () => {
     setTodoList(newTodoList);
   };
 
+  const handleDelete = (id) => {
+    const newTodoList = todoList.filter((item) => item.id !== id);
+    setTodoList(newTodoList);
+  };
+
+  const handleSearch = (e) => {
+    console.log('handle search')
+    let newList = todoList.filter((item) =>
+      item.todoName.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    setCurrentTodoList(newList);
+  };
+
   return (
     <div className="add-todo">
-      <form onSubmit={handleSubmit}>
-        <input
-          value={todoName}
-          onChange={(e) => setTodoName(e.target.value)}
-          type="text"
-          placeholder="Add todo"
-        />
-      </form>
+      {/* 
+      if(toggleSearchAdd === "add-todo" )
+      add todo form
+      elseif(toggleSearchAdd === "search")
+      search form
+      else
+      null
+      */}
+      {toggleSearchAdd === "add-todo" ? (
+        <form onSubmit={handleSubmit}>
+          <input
+            value={todoName}
+            onChange={(e) => setTodoName(e.target.value)}
+            type="text"
+            placeholder="Add todo"
+          />
+        </form>
+      ) : toggleSearchAdd === "search" ? (
+        <div className="search-wrapper">
+          <input
+            onChange={(e) => handleSearch(e)}
+            type="text"
+            placeholder="Search"
+          />
+        </div>
+      ) : null}
       <div className="todo-list">
-        {todoList.map((item) => (
-          <div key={item.id}>
-            <p>{item.todoName}</p>
+        {currentTodoList.map((item) => (
+          <div
+            key={item.id}
+            className={item.completed ? "completed-todo" : "notcompleted-todo"}
+          >
+            <p className={item.completed ? "completed-todo-par" : ""}>
+              {item.todoName}
+            </p>
             <div>
               {item.completed ? (
                 <div>
-                  <i className="ri-close-line"></i>
+                  <i
+                    onClick={() => handleDelete(item.id)}
+                    className="ri-close-line"
+                  ></i>
                   <i
                     onClick={() => handleCompleted(item.id)}
                     className="ri-checkbox-line"
@@ -70,6 +116,16 @@ const Main = () => {
             </div>
           </div>
         ))}
+      </div>
+      <div className="controllers">
+        <i
+          onClick={() => setToggleSearchAdd("add-todo")}
+          className="ri-add-line"
+        ></i>
+        <i
+          onClick={() => setToggleSearchAdd("search")}
+          className="ri-search-eye-line"
+        ></i>
       </div>
     </div>
   );

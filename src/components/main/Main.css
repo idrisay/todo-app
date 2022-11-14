@@ -22,18 +22,25 @@
 
 .add-todo input:focus{
     outline:  0;
-    border: 1px solid green;
+    border: 1px solid #7D8F69;
 }
 
 
 .add-todo .todo-list{
-    padding: 20px;
+    padding: 0px 20px;
 }
 
-.add-todo .todo-list > div{
+.add-todo .todo-list > .notcompleted-todo{
     border-bottom: 1px solid #EF6461;
     display: flex;
     justify-content: space-between;
+}
+
+.add-todo .todo-list > .completed-todo{
+    border-bottom: 1px solid #7D8F69;
+    display: flex;
+    justify-content: space-between;
+    color: #7D8F69;
 }
 
 .add-todo .todo-list div p {
@@ -49,4 +56,29 @@
 .ri-close-line{
     color: red;
     margin: 0px 5px;
+}
+
+.completed-todo-par{
+    text-decoration: line-through;
+}
+
+.ri-checkbox-line{
+    color: black;
+}
+
+.controllers{
+    padding: 10px 15px;
+    background-color: #FFE1E1;
+    border-radius: 0px 0px 10px 10px;
+}
+
+.controllers > i{
+    margin: 0px 5px;
+    cursor: pointer;
+}
+
+.search-wrapper{
+    margin: 10px;
+    display: flex;
+    justify-content: center;
 }
