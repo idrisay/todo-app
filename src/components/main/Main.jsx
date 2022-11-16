@@ -4,6 +4,7 @@ import { useState } from "react";
 const Main = () => {
   let [todoName, setTodoName] = useState("");
   const [toggleSearchAdd, setToggleSearchAdd] = useState("search");
+  const [label, setLabel] = useState("all");
   let [todoList, setTodoList] = useState([
     { id: 1, todoName: "Learn React", completed: false }, // -> item
     { id: 2, todoName: "Learn JS", completed: true }, // -> item
@@ -13,7 +14,7 @@ const Main = () => {
     { id: 1, todoName: "Learn React", completed: false }, // -> item
     { id: 2, todoName: "Learn JS", completed: true }, // -> item
     { id: 3, todoName: "Learn HTML", completed: false }, // -> item
-  ])
+  ]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -34,6 +35,7 @@ const Main = () => {
   };
 
   const handleCompleted = (id) => {
+    console.log('handleCompleted')
     const newTodoList = todoList.map((item) => {
       if (id === item.id) {
         item.completed = !item.completed;
@@ -43,19 +45,34 @@ const Main = () => {
       }
     });
     setTodoList(newTodoList);
+    setCurrentTodoList(newTodoList);
   };
 
   const handleDelete = (id) => {
     const newTodoList = todoList.filter((item) => item.id !== id);
+    console.log('handleDelete', newTodoList)
     setTodoList(newTodoList);
+    setCurrentTodoList(newTodoList);
   };
 
   const handleSearch = (e) => {
-    console.log('handle search')
     let newList = todoList.filter((item) =>
       item.todoName.toLowerCase().includes(e.target.value.toLowerCase())
     );
     setCurrentTodoList(newList);
+  };
+
+  const handleLabels = (type) => {
+    setLabel(type);
+    if (type === "active") {
+      let activeList = todoList.filter((item) => item.completed === false);
+      setCurrentTodoList(activeList);
+    }else if (type === 'completed') {
+      let completedList = todoList.filter((item) => item.completed === true);
+      setCurrentTodoList(completedList);
+    }else{
+      setCurrentTodoList(todoList);
+    }
   };
 
   return (
@@ -118,14 +135,37 @@ const Main = () => {
         ))}
       </div>
       <div className="controllers">
-        <i
-          onClick={() => setToggleSearchAdd("add-todo")}
-          className="ri-add-line"
-        ></i>
-        <i
-          onClick={() => setToggleSearchAdd("search")}
-          className="ri-search-eye-line"
-        ></i>
+        <div className="toggle-search-add">
+          <i
+            onClick={() => setToggleSearchAdd("add-todo")}
+            className="ri-add-line"
+          ></i>
+          <i
+            onClick={() => setToggleSearchAdd("search")}
+            className="ri-search-eye-line"
+          ></i>
+          <div className="counter">{currentTodoList.length} items</div>
+        </div>
+        <div className="labels">
+          <p
+            onClick={() => handleLabels("all")}
+            className={label === "all" ? "active" : "passive"}
+          >
+            All
+          </p>
+          <p
+            className={label === "active" ? "active" : "passive"}
+            onClick={() => handleLabels("active")}
+          >
+            Active
+          </p>
+          <p
+            onClick={() => handleLabels("completed")}
+            className={label === "completed" ? "active" : "passive"}
+          >
+            Completed
+          </p>
+        </div>
       </div>
     </div>
   );
